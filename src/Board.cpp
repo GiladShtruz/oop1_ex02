@@ -65,7 +65,7 @@ void Board::print(int level, int points)
 struct Location Board::isValid(struct Location newLoc, struct Location lastLoc)
 {
 	//added Bounds check YAIR
-	if (newLoc.col > m_board[0].size() -1 ||
+	if (newLoc.col > m_board[newLoc.row].size() -1 ||
 		newLoc.row > m_board.size() -1 )
 	{
 		return lastLoc;
