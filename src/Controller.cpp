@@ -165,7 +165,13 @@ void Controller::run()
 		
 
 	}
+	if (!isFailed)
+	{
+		system("cls");
+		std::cout << "You Win!\nYour Points is: " << playerPoints << " \n";
+	}
 }
+
 void resetGuards(std::vector<Guard>& guards, Board& board)
 {
 	for (int guardIndex = 0; guardIndex < guards.size(); guardIndex++)

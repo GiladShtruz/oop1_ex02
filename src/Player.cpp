@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "Board.h"
 struct Location handleSpecialKey(Board& board, struct Location loc);
-bool isBombClicked(int c);
+
 
 
 Player::Player() {}
@@ -36,7 +36,7 @@ bool Player::isPlayerBombed(Bomb bomb)
 	struct Location bombLoc4 = Location(bombLoc1.row, bombLoc1.col + 1);
 	struct Location bombLoc5 = Location(bombLoc1.row, bombLoc1.col - 1);
 	if (m_location == bombLoc1 || m_location == bombLoc2 || m_location == bombLoc3 || m_location == bombLoc4 || m_location == bombLoc5)
-	{		
+	{
 		return true;
 	}
 	return false;
@@ -57,33 +57,38 @@ Location Player::getStartLocation()
 	return m_startLocation;
 }
 
-Location Player::move(Board &board, bool &isBombPutted)
+Location Player::move(Board& board, bool& isBombPutted)
 {
-	
+
 	bool toTryAgain = true;
 	struct Location lastLoc = m_location;
 	struct Location newLoc = m_location;
 	while (toTryAgain) {
 		const auto c = _getch();
-		
+
 		switch (c)
 		{
 		case 0:
+		case ' ':
+			isBombPutted = false;
+			toTryAgain = false;
+			break;
 		case Keys::SPECIAL_KEY:
 			newLoc = handleSpecialKey(board, lastLoc);
 			toTryAgain = newLoc == lastLoc;
 			break;
+		case 'b':
+		case 'B':
+			isBombPutted = true;
+			toTryAgain = false;
+			break;
+
 		default:
-			isBombPutted = isBombClicked(c);
-			isBombPutted == true ? toTryAgain = false : toTryAgain = true;			
-			if (std::isspace) {				
-				toTryAgain = false;
-			}
 			break;
 		}
 		// handle bomb
 	}
-	
+
 	return newLoc;
 }
 void Player::setLocation(Location newLoc)
@@ -120,16 +125,3 @@ struct Location handleSpecialKey(Board& board, struct Location lastLoc) {
 	}
 }
 
-bool isBombClicked(int c)
-{
-	switch (c)
-	{
-	case 'b':
-	case 'B':
-		return true;
-		//std::cout << "Bomb\n";
-	default:
-		break;
-	}
-	return false;
-}
